@@ -3,23 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/item1"
+    <item android:id="@+id/to_search_by_name"
         android:title="To search by name!"
         android:icon="@drawable/freeicon"
         android:orderInCategory="100"
         app:showAsAction="never"/>  <!-- This uses showAsAction=always, so look at icon= parameter -->
+    <item android:id="@+id/home"
+        android:icon="@drawable/homeicon"
+        android:orderInCategory="0"
+        app:showAsAction="never"
+        android:title="Home page"/>
 
-
-    <item android:id="@+id/help_item"
+    <item android:id="@+id/to_serch_by_char"
         android:icon="@drawable/global"
         android:title="To search by first character!"
         app:showAsAction="never"
         android:orderInCategory="400"/> <!-- This uses showAsAction=never, so look at title= parameter -->
 
-    <item android:id="@+id/mail"
+    <item android:id="@+id/About"
         android:icon="@drawable/mail"
 
-        android:orderInCategory="75"
+        android:orderInCategory="500"
         app:showAsAction="never"
         android:title="About!"/>
 </menu>

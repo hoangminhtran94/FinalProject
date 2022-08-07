@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class ExploreFragment extends Fragment {
+public class WelcomeScreenFragment extends Fragment {
     Fragment searchFragment;
     @Nullable
     @Override

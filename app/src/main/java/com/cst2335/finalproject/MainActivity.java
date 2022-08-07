@@ -1,5 +1,6 @@
 package com.cst2335.finalproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -18,15 +19,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener{
-    Fragment exploreFragment;
+    Fragment welcomeScreenFragment;
+    Fragment searchFragment;
+    Fragment cocktailCategoriesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        exploreFragment = new ExploreFragment();
-        loadFragment(exploreFragment);
+        welcomeScreenFragment = new WelcomeScreenFragment();
+        searchFragment = new SearchFragment();
+        cocktailCategoriesFragment = new CocktailCategoriesFragment();
+        loadFragment(welcomeScreenFragment);
 
 //This gets the toolbar from the layout:
         Toolbar tBar = (Toolbar)findViewById(R.id.toolbar);
@@ -77,14 +82,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId())
         {
             //what to do when the menu item is selected:
-            case R.id.item1:
+            case R.id.About:
                 message = "You clicked item 1";
+                new AlertDialog.Builder(this)
+                        .setTitle("Really Exit?")
+                        .setMessage("Search by name: insert a name to search!\nSearch by 1st character: pick a character from the list\nProgram by Minh Hoang Tran")
+                        .setNegativeButton("Ok", null).create().show();
                 break;
-            case R.id.help_item:
-                message = "You clicked on help";
+            case R.id.home:
+                message = "Back to home page";
+                loadFragment(welcomeScreenFragment);
                 break;
-            case R.id.mail:
-                message = "You clicked on mail";
+            case R.id.to_search_by_name:
+                message = "You clicked on to search by name";
+                loadFragment(searchFragment);
+                break;
+            case R.id.to_serch_by_char:
+                message = "You clicked on to search by first character";
+                loadFragment(cocktailCategoriesFragment);
                 break;
         }
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -100,14 +115,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(item.getItemId())
         {
-            case R.id.item1:
+            case R.id.About:
                 message = "You clicked item 1";
+                new AlertDialog.Builder(this)
+                        .setTitle("About!")
+                        .setMessage("Search by name: insert a name to search!\nSearch by 1st character: pick a character from the list\nProgram by Minh Hoang Tran")
+                        .setNegativeButton("Ok", null).create().show();
                 break;
-            case R.id.help_item:
-                message = "You clicked on help";
+            case R.id.home:
+                message = "Back to home page";
+                loadFragment(welcomeScreenFragment);
                 break;
-            case R.id.mail:
-                message = "You clicked on mail";
+            case R.id.to_search_by_name:
+                message = "You clicked on to search by name";
+                loadFragment(searchFragment);
+                break;
+            case R.id.to_serch_by_char:
+                message = "You clicked on to search by first character";
+                loadFragment(cocktailCategoriesFragment);
                 break;
         }
 
