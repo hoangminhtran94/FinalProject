@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_cocktails_category.xml" value="0.55" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_cocktails_list_view.xml" value="0.55" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_main.xml" value="0.2674772036474164" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/content_main.xml" value="0.2674772036474164" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/fragment_first.xml" value="0.2674772036474164" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/fragment_second.xml" value="0.2674772036474164" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>
