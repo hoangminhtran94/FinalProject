@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,7 @@ public class SearchFragment extends Fragment {
     Button btnSearchByName;
     Button btnSearchByFirstChar;
     Fragment cocktailCategoriesFragment;
+    private SharedPreferences preferences;
     
     private SQLiteDatabase db;
     @Nullable
@@ -52,7 +55,17 @@ public class SearchFragment extends Fragment {
 
 
         btnSearchByName.setOnClickListener(view1 -> {
-            String search = searchCocktailText.getText().toString();
+            preferences = this.getActivity().getSharedPreferences("cocktail", Context.MODE_PRIVATE);
+            String searchQuery = preferences.getString("searchquery","");
+            SharedPreferences.Editor ed = preferences.edit();
+            String search = searchCocktailText.getText().toString().trim();
+            ed.putString("searchquery",search).apply();
+
+            if(search.isEmpty()) {
+                searchCocktailText.setText(searchQuery);
+            }
+            else {
+
             MyOpener dbOpener = new MyOpener(getActivity());
             db = dbOpener.getWritableDatabase();
             Executor newThread = Executors.newSingleThreadExecutor();
@@ -104,7 +117,9 @@ public class SearchFragment extends Fragment {
             Intent intent = new Intent(getActivity(), CocktailsListView.class);
             intent.putExtra("search", search);
             startActivity(intent);
-        });
+
+              });
+            }
         });
         return view;
     }
