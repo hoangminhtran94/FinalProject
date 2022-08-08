@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment welcomeScreenFragment;
     Fragment searchFragment;
     Fragment cocktailCategoriesFragment;
+    Fragment favoriteCocktailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         welcomeScreenFragment = new WelcomeScreenFragment();
         searchFragment = new SearchFragment();
         cocktailCategoriesFragment = new CocktailCategoriesFragment();
+      favoriteCocktailsFragment = new FavoriteFragment();
+
         loadFragment(welcomeScreenFragment);
 
 //This gets the toolbar from the layout:
@@ -97,6 +100,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 message = "You clicked on to search by name";
                 loadFragment(searchFragment);
                 break;
+            case R.id.favorite:
+                message = "You clicked on to favorite list";
+                loadFragment(favoriteCocktailsFragment);
+                break;
             case R.id.to_serch_by_char:
                 message = "You clicked on to search by first character";
                 loadFragment(cocktailCategoriesFragment);
@@ -129,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.to_search_by_name:
                 message = "You clicked on to search by name";
                 loadFragment(searchFragment);
+                break;
+            case R.id.favorite:
+                message = "You clicked on to favorite list";
+                loadFragment(favoriteCocktailsFragment);
                 break;
             case R.id.to_serch_by_char:
                 message = "You clicked on to search by first character";

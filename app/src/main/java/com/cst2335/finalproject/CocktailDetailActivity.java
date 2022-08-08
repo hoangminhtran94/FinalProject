@@ -1,24 +1,26 @@
 package com.cst2335.finalproject;
 
-import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,12 +37,15 @@ public class CocktailDetailActivity extends AppCompatActivity {
     private TextView ingredient3View;
     private Bitmap cocktailImage;
     private ImageView cocktailDetailImage;
+    private Button favoriteButton;
+    private SQLiteDatabase db;
+    RelativeLayout relativeLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_random);
+        setContentView(R.layout.activity_cocktail_detail);
 
         cocktailName = (TextView) findViewById(R.id.cocktailDetailname);
         instructionView = (TextView) findViewById(R.id.detail_instructions_text);
@@ -48,6 +53,8 @@ public class CocktailDetailActivity extends AppCompatActivity {
         ingredient2View = (TextView) findViewById(R.id.detail_ingredient_2);
         ingredient3View = (TextView) findViewById(R.id.detail_ingredient_3);
         cocktailDetailImage = (ImageView) findViewById(R.id.detail_cocktail_image);
+        favoriteButton = (Button) findViewById(R.id.favorite_button);
+        relativeLayout = (RelativeLayout) findViewById(R.id.cocktail_detail);
 
         Intent list = getIntent();
         String name = list.getStringExtra("NAME");
@@ -57,12 +64,34 @@ public class CocktailDetailActivity extends AppCompatActivity {
         String ingredient2 = list.getStringExtra("Ingredient2");
         String ingredient3 = list.getStringExtra("Ingredient3");
 
+        String filename = image.substring(image.lastIndexOf("/")+1).trim();
+
 
         cocktailName.setText(name);
         instructionView.setText(instruction);
         ingredient1View.setText(ingredient1);
         ingredient2View.setText(ingredient2);
         ingredient3View.setText(ingredient3);
+
+        FavoriteDatabase dbOpener = new FavoriteDatabase(this);
+        db = dbOpener.getWritableDatabase();
+        favoriteButton.setOnClickListener(view -> {
+            ContentValues newRowValues = new ContentValues();
+            newRowValues.put(FavoriteDatabase.COL_IMAGE, filename);
+            newRowValues.put(FavoriteDatabase.COL_NAME,name);
+            newRowValues.put(FavoriteDatabase.COL_INSTRUCTION,instruction);
+            newRowValues.put(FavoriteDatabase.COL_INGREDIENT_1,ingredient1);
+            newRowValues.put(FavoriteDatabase.COL_INGREDIENT_2,ingredient2);
+            newRowValues.put(FavoriteDatabase.COL_INGREDIENT_3,ingredient3);
+            db.insert(FavoriteDatabase.TABLE_NAME, null, newRowValues);
+            Snackbar snackbar = Snackbar
+                    .make(relativeLayout, "Saved favorite "+ name, Snackbar.LENGTH_LONG).setAction("Ok", view1 -> {
+                        return;
+                    });
+            snackbar.show();
+
+        });
+
 
         LoadImageInBackGround querry = new LoadImageInBackGround();
         querry.execute(image);
@@ -111,6 +140,7 @@ public class CocktailDetailActivity extends AppCompatActivity {
             cocktailImage = BitmapFactory.decodeStream(connection.getInputStream());
             FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
             cocktailImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
             outputStream.flush();
             outputStream.close();
             Log.i("WeatherForecast", "Weather icon, " + filename + " is downloaded and displayed.");

@@ -38,8 +38,8 @@ public class SearchFragment extends Fragment {
     Button btnSearchByFirstChar;
     Fragment cocktailCategoriesFragment;
     private SharedPreferences preferences;
-    
-    private SQLiteDatabase db;
+    private SQLiteDatabase db
+   ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,7 +65,6 @@ public class SearchFragment extends Fragment {
                 searchCocktailText.setText(searchQuery);
             }
             else {
-
             MyOpener dbOpener = new MyOpener(getActivity());
             db = dbOpener.getWritableDatabase();
             Executor newThread = Executors.newSingleThreadExecutor();
@@ -83,7 +82,6 @@ public class SearchFragment extends Fragment {
                 String result = sb.toString();
                 JSONObject report = new JSONObject(result);
                 JSONArray cocktailArray = report.getJSONArray("drinks");
-                HashMap<String, String> cocktailList;
 
                 for (int i = 0; i < cocktailArray.length(); i++) {
                     JSONObject cocktailItem = cocktailArray.getJSONObject(i);

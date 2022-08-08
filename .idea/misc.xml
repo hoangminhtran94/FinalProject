@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_cocktail_detail.xml" value="0.33" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_cocktails_category.xml" value="0.55" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_cocktails_favorite.xml" value="0.1933876811594203" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_cocktails_list_view.xml" value="0.55" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_explore.xml" value="0.55" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_main.xml" value="0.2674772036474164" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/activity_search.xml" value="0.55" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/content_main.xml" value="0.2674772036474164" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/fragment_first.xml" value="0.2674772036474164" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/fragment_random.xml" value="0.55" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/fragment_second.xml" value="0.2674772036474164" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/layout/header_layout.xml" value="0.55" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FinalProject/app/src/main/res/menu/example_menu.xml" value="0.55" />
       </map>
     </option>
