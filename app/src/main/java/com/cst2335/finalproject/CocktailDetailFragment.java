@@ -2,25 +2,27 @@ package com.cst2335.finalproject;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,7 +30,7 @@ import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class CocktailDetailActivity extends AppCompatActivity {
+public class CocktailDetailFragment extends Fragment {
     private ImageButton imgView;
     private TextView cocktailName;
     private TextView instructionView;
@@ -42,28 +44,33 @@ public class CocktailDetailActivity extends AppCompatActivity {
     RelativeLayout relativeLayout;
 
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cocktail_detail);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.cocktail_detail_fragment, container, false);
 
-        cocktailName = (TextView) findViewById(R.id.cocktailDetailname);
-        instructionView = (TextView) findViewById(R.id.detail_instructions_text);
-        ingredient1View = (TextView) findViewById(R.id.detail_ingredient_1);
-        ingredient2View = (TextView) findViewById(R.id.detail_ingredient_2);
-        ingredient3View = (TextView) findViewById(R.id.detail_ingredient_3);
-        cocktailDetailImage = (ImageView) findViewById(R.id.detail_cocktail_image);
-        favoriteButton = (Button) findViewById(R.id.favorite_button);
-        relativeLayout = (RelativeLayout) findViewById(R.id.cocktail_detail);
 
-        Intent list = getIntent();
-        String name = list.getStringExtra("NAME");
-        String image = list.getStringExtra("IMAGE");
-        String instruction = list.getStringExtra("INSTRUCTION");
-        String ingredient1 = list.getStringExtra("Ingredient1");
-        String ingredient2 = list.getStringExtra("Ingredient2");
-        String ingredient3 = list.getStringExtra("Ingredient3");
+        cocktailName = (TextView) view.findViewById(R.id.cocktailDetailname);
 
+        instructionView = (TextView) view.findViewById(R.id.detail_instructions_text);
+        ingredient1View = (TextView) view.findViewById(R.id.detail_ingredient_1);
+        ingredient2View = (TextView) view.findViewById(R.id.detail_ingredient_2);
+        ingredient3View = (TextView) view.findViewById(R.id.detail_ingredient_3);
+        cocktailDetailImage = (ImageView) view.findViewById(R.id.detail_cocktail_image);
+        favoriteButton = (Button) view.findViewById(R.id.favorite_button);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.cocktail_detail);
+
+
+        Bundle fromCocktailList = this.getArguments();
+        if(fromCocktailList != null){
+
+
+        String name = fromCocktailList.getString("NAME");
+        String image = fromCocktailList.getString("IMAGE");
+        String instruction = fromCocktailList.getString("INSTRUCTION");
+        String ingredient1 = fromCocktailList.getString("Ingredient1");
+        String ingredient2 = fromCocktailList.getString("Ingredient2");
+        String ingredient3 = fromCocktailList.getString("Ingredient3");
         String filename = image.substring(image.lastIndexOf("/")+1).trim();
 
 
@@ -73,9 +80,9 @@ public class CocktailDetailActivity extends AppCompatActivity {
         ingredient2View.setText(ingredient2);
         ingredient3View.setText(ingredient3);
 
-        FavoriteDatabase dbOpener = new FavoriteDatabase(this);
+        FavoriteDatabase dbOpener = new FavoriteDatabase(getActivity());
         db = dbOpener.getWritableDatabase();
-        favoriteButton.setOnClickListener(view -> {
+        favoriteButton.setOnClickListener(view1 -> {
             ContentValues newRowValues = new ContentValues();
             newRowValues.put(FavoriteDatabase.COL_IMAGE, filename);
             newRowValues.put(FavoriteDatabase.COL_NAME,name);
@@ -85,18 +92,20 @@ public class CocktailDetailActivity extends AppCompatActivity {
             newRowValues.put(FavoriteDatabase.COL_INGREDIENT_3,ingredient3);
             db.insert(FavoriteDatabase.TABLE_NAME, null, newRowValues);
             Snackbar snackbar = Snackbar
-                    .make(relativeLayout, "Saved favorite "+ name, Snackbar.LENGTH_LONG).setAction("Ok", view1 -> {
+                    .make(relativeLayout, "Saved favorite "+ name, Snackbar.LENGTH_LONG).setAction("Ok", view2 -> {
                         return;
                     });
             snackbar.show();
 
         });
+            LoadImageInBackGround querry = new LoadImageInBackGround();
+            querry.execute(image);
+        }
 
 
-        LoadImageInBackGround querry = new LoadImageInBackGround();
-        querry.execute(image);
 
 
+        return  view;
     }
 
 
@@ -106,7 +115,7 @@ public class CocktailDetailActivity extends AppCompatActivity {
             String filename = args[0].substring(args[0].lastIndexOf("/")+1);
             System.out.println(filename);
 
-            File file = getBaseContext().getFileStreamPath(filename);
+            File file = getActivity().getBaseContext().getFileStreamPath(filename);
             if (!file.exists()) {
                saveImage(args[0]);
             }else {
@@ -124,7 +133,7 @@ public class CocktailDetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            cocktailDetailImage = (ImageView) findViewById(R.id.detail_cocktail_image);
+
             cocktailDetailImage.setImageBitmap(cocktailImage);
         }
     }
@@ -138,7 +147,7 @@ public class CocktailDetailActivity extends AppCompatActivity {
             String filename = URL.substring(URL.lastIndexOf("/")+1).trim();
 
             cocktailImage = BitmapFactory.decodeStream(connection.getInputStream());
-            FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
             cocktailImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
 
             outputStream.flush();

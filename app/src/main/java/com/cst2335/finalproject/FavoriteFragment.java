@@ -1,6 +1,5 @@
 package com.cst2335.finalproject;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,32 +15,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 public class FavoriteFragment extends Fragment {
     ArrayList<CocktailModel> favoriteCocktails;
     private SQLiteDatabase db;
-
+    Fragment cocktailFavoriteDetailFragment;
 
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_cocktails_favorite, container, false);
         favoriteCocktails = new ArrayList<CocktailModel>();
+
+        cocktailFavoriteDetailFragment = new CocktailFavoriteDetailFragment();
         loadDataFromDataBase();
 
         FavoriteCocktailsArrayAdapter favoriteCocktailsArrayAdapter = new FavoriteCocktailsArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_1, favoriteCocktails);
@@ -51,15 +39,15 @@ public class FavoriteFragment extends Fragment {
         favoriteCocktailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.i("Clicked", "clicked " + position);
-                Intent intent = new Intent(getActivity(),CocktailFavoriteDetail.class);
-                intent.putExtra("NAME",favoriteCocktails.get(position).name);
-                intent.putExtra("IMAGE",favoriteCocktails.get(position).image);
-                intent.putExtra("INSTRUCTION",favoriteCocktails.get(position).instruction);
-                intent.putExtra("INGREDIENT1",favoriteCocktails.get(position).ingredient1);
-                intent.putExtra("INGREDIENT2",favoriteCocktails.get(position).ingredient2);
-                intent.putExtra("INGREDIENT3",favoriteCocktails.get(position).ingredient3);
-                getActivity().startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("NAME",favoriteCocktails.get(position).name);
+                bundle.putString("IMAGE",favoriteCocktails.get(position).image);
+                bundle.putString("INSTRUCTION",favoriteCocktails.get(position).instruction);
+                bundle.putString("Ingredient1",favoriteCocktails.get(position).ingredient1);
+                bundle.putString("Ingredient2",favoriteCocktails.get(position).ingredient2);
+                bundle.putString("Ingredient3",favoriteCocktails.get(position).ingredient3);
+                cocktailFavoriteDetailFragment.setArguments(bundle);
+                loadFragment(cocktailFavoriteDetailFragment);
 
 
             }
@@ -115,5 +103,16 @@ public class FavoriteFragment extends Fragment {
         }
 
 
+    }
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }

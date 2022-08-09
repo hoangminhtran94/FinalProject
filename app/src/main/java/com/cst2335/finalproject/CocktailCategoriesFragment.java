@@ -5,20 +5,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +34,7 @@ import java.util.concurrent.Executors;
 public class CocktailCategoriesFragment extends     Fragment {
     String[] characters = new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Z","Y"};
     private SQLiteDatabase db;
+    private Fragment cocktailListFragment;
 
 
     @Override
@@ -47,7 +44,7 @@ public class CocktailCategoriesFragment extends     Fragment {
         CocktailsCategoriesArrayAdapter cocktailsArrayAdapter = new CocktailsCategoriesArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_1, characters);
         ListView cocktailsCategories = (ListView) view.findViewById(R.id.cocktailCategories);
         cocktailsCategories.setAdapter(cocktailsArrayAdapter);
-
+        cocktailListFragment = new CocktailsListFragment();
         cocktailsCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -101,15 +98,25 @@ public class CocktailCategoriesFragment extends     Fragment {
                     } catch (Exception e) {
                         Log.d("Error", e.toString());
                     }
-                    Intent intent = new Intent(getActivity(), CocktailsListView.class);
-                    intent.putExtra("search", search);
-                    startActivity(intent);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("search", search);
+                    cocktailListFragment.setArguments(bundle);
+                    loadFragment(cocktailListFragment);
                 });
             }
         });
         return  view;
     }
-
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
 
 
 

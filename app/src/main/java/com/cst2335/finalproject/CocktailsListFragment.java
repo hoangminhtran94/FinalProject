@@ -2,8 +2,6 @@ package com.cst2335.finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
@@ -11,31 +9,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
-public class CocktailsListView extends AppCompatActivity{
+public class CocktailsListFragment extends Fragment{
 
     ArrayList<CocktailModel> currentCocktailsList;
     ArrayList<String> cocktailsNames;
@@ -44,54 +29,64 @@ public class CocktailsListView extends AppCompatActivity{
     private ListView cocktailsListView;
     private TextView mResultsTextView;
     private SQLiteDatabase db;
-    static Toast t;
-    static Context context;
+    Fragment searchFragment;
+    Fragment cocktailDetailFragment;
     Bitmap cocktailImage;
+    Context context;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cocktails_list_view);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.activity_cocktails_list_view, container, false);
 
+
+        context = getContext();
         currentCocktailsList = new ArrayList<CocktailModel>();
         cocktailsNames = new ArrayList<String>();
-        cocktailsListView = (ListView) findViewById((R.id.cocktail_list));
+        cocktailsListView = view.findViewById(R.id.cocktail_list);
 
 
         loadDataFromDatabase();
-        adapter = new MyListAdapter(this, currentCocktailsList);
+
+        cocktailDetailFragment = new CocktailDetailFragment();
+        searchFragment = new SearchFragment();
+        adapter = new MyListAdapter(getActivity(), currentCocktailsList);
         cocktailsListView.setItemsCanFocus(true);
         cocktailsListView.setClickable(true);
 
-        mResultsTextView = (TextView) findViewById(R.id.search_results);
+        mResultsTextView = (TextView) view.findViewById(R.id.search_results);
         cocktailsListView.setClickable(true);
         cocktailsListView.setAdapter(adapter);
 
+        cocktailsListView.setOnItemClickListener((adapterView, view1, i, l) -> {
+
+            Bundle bundle = new Bundle();
+            bundle.putString("NAME",currentCocktailsList.get(i).name);
+            bundle.putString("IMAGE",currentCocktailsList.get(i).image);
+            bundle.putString("INSTRUCTION",currentCocktailsList.get(i).instruction);
+            bundle.putString("Ingredient1",currentCocktailsList.get(i).ingredient1);
+            bundle.putString("Ingredient2",currentCocktailsList.get(i).ingredient2);
+            bundle.putString("Ingredient3",currentCocktailsList.get(i).ingredient3);
+            cocktailDetailFragment.setArguments(bundle);
+            loadFragment(cocktailDetailFragment);
+                });
 
 
 
 
-        Intent intent = getIntent();
-        String results = intent.getStringExtra("search");
-        mResultsTextView.setText("Cocktails Found for: " + results);
 
+        Bundle fromSearch = this.getArguments();
+        if(fromSearch != null){
+        String results = fromSearch.getString("search");
+        mResultsTextView.setText("Cocktails Found for: " + results);}
+        return view;
     }
 
-    @Override
-    public void onBackPressed() {
-        db.execSQL("delete from " + "COCKTAILS");
-        currentCocktailsList.clear();
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, (arg0, arg1) -> CocktailsListView.super.onBackPressed()).create().show();
-    }
 
 
     private void loadDataFromDatabase() {
         //get a database connection:
-        MyOpener dbOpener = new MyOpener(this);
+        MyOpener dbOpener = new MyOpener(getActivity());
         db = dbOpener.getWritableDatabase(); //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
 
 
@@ -129,11 +124,34 @@ public class CocktailsListView extends AppCompatActivity{
         }
     }
 
-    private static void makeToast(String s) {
-        if (t != null) t.cancel();
-        t = Toast.makeText(context, s, Toast.LENGTH_SHORT);
-        t.show();
+    private void makeToast(String s) {
+       Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
     }
 
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        db.delete(MyOpener.TABLE_NAME,null,null);
+        makeToast("Exiting...");
+//        new AlertDialog.Builder(getActivity())
+//                .setTitle("Really Exit?")
+//                .setMessage("Are you sure you want to exit?")
+//                .setNegativeButton(android.R.string.no, null)
+//                .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+//                    makeToast("Exiting...");
+//                }).create().show();
+    }
 
 }

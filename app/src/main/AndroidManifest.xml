@@ -11,10 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CocktailsListView">
+        <activity android:name=".CocktailsListFragment">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cst2335.finalproject.CocktailsListView">
+                android:value="com.cst2335.finalproject.CocktailsListFragment">
             </meta-data>
         </activity>
         <activity
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CocktailDetailActivity"
+            android:name=".CocktailDetailFragment"
             android:theme="@style/NoActionBarTheme"
             android:exported="true">
             <intent-filter>
@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CocktailFavoriteDetail"
+            android:name=".CocktailFavoriteDetailFragment"
             android:theme="@style/NoActionBarTheme"
             android:exported="true">
             <intent-filter>

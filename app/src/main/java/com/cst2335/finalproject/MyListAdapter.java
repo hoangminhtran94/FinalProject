@@ -121,27 +121,7 @@ public class MyListAdapter extends BaseAdapter {
 
         image.setImageBitmap(cocktailImage);
 
-
-
-
-            Button button = newView.findViewById(R.id.detailButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("Button","Button");
-                Intent intent= new Intent(context, CocktailDetailActivity.class);
-                intent.putExtra("NAME",getName(position));
-                intent.putExtra("IMAGE",getImage(position));
-                intent.putExtra("INSTRUCTION",getInstruction(position));
-                intent.putExtra("Ingredient1",getIngredient1(position));
-                intent.putExtra("Ingredient2",getIngredient2(position));
-                intent.putExtra("Ingredient3",getIngredient3(position));
-                context.startActivity(intent);
-            }
-        });
         name.setText(getName(position));
-        name.setClickable(true);
-        newView.setClickable(true);
 
 
         return newView;
