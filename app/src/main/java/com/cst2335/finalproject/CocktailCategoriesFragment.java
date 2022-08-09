@@ -40,7 +40,7 @@ public class CocktailCategoriesFragment extends     Fragment {
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_cocktails_category, container, false);
+        final View view = inflater.inflate(R.layout.cocktails_category_fragment, container, false);
         CocktailsCategoriesArrayAdapter cocktailsArrayAdapter = new CocktailsCategoriesArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_1, characters);
         ListView cocktailsCategories = (ListView) view.findViewById(R.id.cocktailCategories);
         cocktailsCategories.setAdapter(cocktailsArrayAdapter);

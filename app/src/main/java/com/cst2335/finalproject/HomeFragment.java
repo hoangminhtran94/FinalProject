@@ -1,7 +1,5 @@
 package com.cst2335.finalproject;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class WelcomeScreenFragment extends Fragment {
+public class HomeFragment extends Fragment {
     Fragment searchFragment;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_explore, container, false);
+        final View view = inflater.inflate(R.layout.home_fragment, container, false);
         searchFragment = new SearchFragment();
         Button exploreCocktails = view.findViewById(R.id.explore_cocktails);
         exploreCocktails.setOnClickListener(view1 -> {

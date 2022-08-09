@@ -42,7 +42,7 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_search, container, false);
+        final View view = inflater.inflate(R.layout.search_fragment, container, false);
 
         cocktailListFragment = new CocktailsListFragment();
         searchCocktailText = (EditText) view.findViewById(R.id.search_cocktail);

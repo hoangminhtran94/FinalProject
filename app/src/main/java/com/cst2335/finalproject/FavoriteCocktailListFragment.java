@@ -1,10 +1,8 @@
 package com.cst2335.finalproject;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 
-public class FavoriteFragment extends Fragment {
+public class FavoriteCocktailListFragment extends Fragment {
     ArrayList<CocktailModel> favoriteCocktails;
     private SQLiteDatabase db;
     Fragment cocktailFavoriteDetailFragment;
@@ -26,7 +24,7 @@ public class FavoriteFragment extends Fragment {
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_cocktails_favorite, container, false);
+        final View view = inflater.inflate(R.layout.cocktails_favorite_fragment, container, false);
         favoriteCocktails = new ArrayList<CocktailModel>();
 
         cocktailFavoriteDetailFragment = new CocktailFavoriteDetailFragment();

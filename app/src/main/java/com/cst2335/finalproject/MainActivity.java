@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        welcomeScreenFragment = new WelcomeScreenFragment();
+        welcomeScreenFragment = new HomeFragment();
         searchFragment = new SearchFragment();
         cocktailCategoriesFragment = new CocktailCategoriesFragment();
-      favoriteCocktailsFragment = new FavoriteFragment();
+      favoriteCocktailsFragment = new FavoriteCocktailListFragment();
 
         loadFragment(welcomeScreenFragment);
 
